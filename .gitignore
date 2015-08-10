@@ -7,8 +7,8 @@
   ehthumbs.db
   Desktop.ini
 # Linux
-# .directory
-# *~
+ .directory
+ *~
 # npm
  node_modules
  *.log
