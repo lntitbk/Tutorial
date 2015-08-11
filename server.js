@@ -17,7 +17,7 @@ var connect = mongoose.connect('mongodb://localhost:27017/lntdev');
 //
 var User = require('./models/user');
 
-
+app.set('view engine','jade');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -93,9 +93,13 @@ router.route('/users/:use_id')
 //});
 
 router.get('/', function(req, res){
-    res.json({  message : 'welcome to API!'});
+   // res.json({  message : 'welcome to API!'});
+   res.render('index', {title : 'welcome', message: 'welcome express and jade!!'});a
 });
 
+//app.get('/index', function(req, res){
+//    res.render('index', {title: 'Hey', message: 'Hello there!!'});
+//});
 app.use('/api', router);
 
 app.listen(port);
