@@ -10,6 +10,8 @@ var app = express();
 
 var bodyParser = require('body-parser');
 
+var useragent = require('useragent');
+
 var mongoose = require('mongoose');
 var connect = mongoose.connect('mongodb://localhost:27017/lntdev');
 
@@ -30,34 +32,34 @@ console.log(port);
 
 var router = express.Router();
 
-router.route('/users')
-  .post( function(req, res){
-     var user = new User();
-
-     user.account = req.body.account;
-     user.pass = req.body.pass;
-     console.log(req.body);
-     user.save(function(err){
+// created router for user get, post
+    router.route('/users')
+      .post( function(req, res){
+       var user = new User();
+       user.account = req.body.account;
+       user.pass = req.body.pass;
+       console.log(req.body);
+       user.save(function(err){
        if(err) {
-         console.log("=========ERROR==========");
+         console.log("Post error");
          res.send(err);
        } else {
-           console.log("============================");
+           console.log("Post sucessfull!!");
            res.json({message:'user created!'});
-    }
-   });
-  })
- .get( function(req, res){
-    User.find(function(err, users){
-    if(err){
-      res.send(err);    
-    } else{
-      res.json(users);
-    }
-  });
-});
+       }
+       });
+       })
+       .get( function(req, res){
+         User.find(function(err, users){
+         if(err){
+          res.send(err);    
+         } else{
+          res.render('listView', { listUsers : users});
+         }
+        });
+       });
 
-router.route('/users/:use_id')
+    router.route('/users/:use_id')
       .put(function(req, res){
         console.log(1);
         User.findById(req.params.use_id, function(err, use){
@@ -87,21 +89,41 @@ router.route('/users/:use_id')
         });
       });
 
-//router.use(function(req, res, next){
-//    console.log('something is happenning.');
-//    next();
-//});
+// created router
+    router.get('/', function(req, res){
+    
+      var agent = useragent.lookup(req.headers['user-agent']);
+      if(agent.device.toString() != 'Other 0.0.0'){
+        res.send('mobie');
+      }
+       else
+      res.send('hello API');
+    })
+    .post('/', function(req, res){
+     // res.send('welcome ' + req.body.id);
+      console.log(req.body.pass);
+      User.findOne({ account : req.body.id },function(err,user){
+       if(err){
+         res.send(err);
+       } else {
+           var pass = user.pass;
+           console.log(user.pass);
+           console.log(req.body.pass);
+         if(pass === req.body.pass){
+           res.render('success');
+         } else
+         {
+          res.send("False");
+         }
+       }
+      });
+    });
+// api of server
+    app.get('/', function(req, res){
+        res.render('index', {title: 'Hey', message: 'Hello there!!'});
+    });
+    app.use('/api', router);
 
-router.get('/', function(req, res){
-   // res.json({  message : 'welcome to API!'});
-   res.render('index', {title : 'welcome', message: 'welcome express and jade!!'});a
-});
-
-//app.get('/index', function(req, res){
-//    res.render('index', {title: 'Hey', message: 'Hello there!!'});
-//});
-app.use('/api', router);
-
-app.listen(port);
-console.log('Magic happens on Port ', port);
-
+// listen server
+    app.listen(port);
+    console.log('Magic happens on Port ', port);

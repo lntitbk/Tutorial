@@ -1,0 +1,16 @@
+extends ./layout.jade
+block header
+ title jade example 
+
+block content
+  h1 List User
+  table(border ="1" style="width:50%")
+    tr 
+      td
+        h4 User
+      td 
+        h4 Pass
+    each user in listUsers
+      tr  
+        td= user.account
+        td= user.pass 

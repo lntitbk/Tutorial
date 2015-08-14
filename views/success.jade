@@ -1,0 +1,9 @@
+extends  ./layout.jade
+
+block header
+    title welcome Jade
+block content
+    form(method ="POST" action = "api/users")
+      input(type = "text", name = "account")
+      input(type = "text", name = "pass")
+      input(type = "submit", value = "search")
