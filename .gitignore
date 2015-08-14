@@ -8,6 +8,9 @@
   Desktop.ini
 # Linux
  .directory
+ *.swo
+ *.swp
+ *.swn
  *~
 # npm
  node_modules

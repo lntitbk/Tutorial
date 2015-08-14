@@ -3,11 +3,10 @@ html
     head
         
     body
-        h1 Login
-        form(method = "POST", action="/api")
-          input(type = "text", name ="id")
-          br
-          input(type = "password", name = "pass")
-          br
-          input(type = "submit", value = "login")
+      h1 Welcome
+        div
+          form(method = "GET", action = "api/login")
+            input(type = "submit", value = "login")
+          form(method = "GET", action = "api/signup")
+            input(type = "submit", value = "signup")
 

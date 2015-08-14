@@ -1,0 +1,11 @@
+extends ./layout.jade
+
+block header
+  title Sign UP
+block content
+  form(method ="POST" action ="/api/signup")
+    input( type = "text" name = "account")
+    br
+    input( type = "text" name = "pass")
+    br
+    input( type = "submit" value = "created")

@@ -52,7 +52,7 @@ var router = express.Router();
        .get( function(req, res){
          User.find(function(err, users){
          if(err){
-          res.send(err);    
+          res.send(err);
          } else{
           res.render('listView', { listUsers : users});
          }
@@ -77,7 +77,7 @@ var router = express.Router();
       .get(function(req, res){
         console.log(2);
         User.findById(req.params.use_id, function(err, use){
-            if(err) res.send(err) 
+            if(err) res.send(err)
             else res.json(use);
         });
       })
@@ -91,13 +91,12 @@ var router = express.Router();
 
 // created router
     router.get('/', function(req, res){
-    
       var agent = useragent.lookup(req.headers['user-agent']);
       if(agent.device.toString() != 'Other 0.0.0'){
         res.send('mobie');
       }
        else
-      res.send('hello API');
+      res.render('index');
     })
     .post('/', function(req, res){
      // res.send('welcome ' + req.body.id);
@@ -118,6 +117,41 @@ var router = express.Router();
        }
       });
     });
+// api login
+    router.route('/login')
+        .get( function( req, res){
+        // to do login
+        res.render('login');
+        })
+        .post( function( req, res){
+          console.log('OK loginiing');
+          User.findOne({account : req.body.account }, function(err, user){
+            if(err){
+              res.send(err);    
+            } else {
+              if(user.pass === req.body.pass)
+                res.send('log in successfull!');
+              else res.send('log in fail');
+            }
+          });
+        });
+// sign up
+   router.route('/signup')
+       .get( function( req, res){
+       // to do signup
+         res.render('signup');
+       })
+       .post( function( req, res){
+         res.send('OK signout');
+        var user = new User();
+        user.account = req.body.account;
+        user.pass = req.body.pass;
+        
+        user.save(function (err) {
+          if(err) res.send(err)
+          else res.send({message : 'created User'});
+        });
+       });
 // api of server
     app.get('/', function(req, res){
         res.render('index', {title: 'Hey', message: 'Hello there!!'});
