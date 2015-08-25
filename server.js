@@ -12,7 +12,7 @@ var bodyParser = require('body-parser');
 
 
 var mongoose = require('mongoose');
-var connect = mongoose.connect('mongodb://localhost:27017/lntdev');
+var mongoUrl = 'mongodb://localhost:27017/lntdev';
 
 //console.log(connect);
 //
@@ -22,7 +22,13 @@ app.set('view engine','jade');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var port = process.env.PORT || 8080;
+var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port = process.env.OPENSHIFT_NODEJS_PORT  || 8080;
+if (process.env.OPENSHIFT_NODEJS_IP) {
+  mongoUrl = 'mongodb://$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/lntdev';
+}
+
+var connect = mongoose.connect(mongoUrl);
 console.log(process.env.PORT);
 console.log(port);
 
