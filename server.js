@@ -43,5 +43,5 @@ var router = control.router;
     app.use('/api', router);
 
 // listen server
-    app.listen(port);
+    app.listen(port, ipaddress);
     console.log('Magic happens on Port ', port);
